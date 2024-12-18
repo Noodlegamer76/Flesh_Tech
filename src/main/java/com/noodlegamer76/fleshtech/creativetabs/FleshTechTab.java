@@ -10,6 +10,8 @@ public class FleshTechTab {
         if (event.getTabKey() == InitCreativeTabs.fleshTechTab.getKey()) {
             event.accept(InitItems.TEST_ITEM);
             event.accept(InitItems.RENDER_TESTER_BLOCK_ITEM);
+            event.accept(InitItems.MONSTER_CORE);
+            event.accept(InitItems.STOMACH);
         }
     }
 }

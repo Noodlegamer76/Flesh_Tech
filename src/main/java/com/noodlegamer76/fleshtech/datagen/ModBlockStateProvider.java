@@ -1,6 +1,8 @@
 package com.noodlegamer76.fleshtech.datagen;
 
 import com.noodlegamer76.fleshtech.FleshTechMod;
+import com.noodlegamer76.fleshtech.block.InitBlocks;
+import com.noodlegamer76.fleshtech.entity.block.InitBlockEntities;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.*;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -11,6 +13,8 @@ import net.minecraftforge.registries.RegistryObject;
 public class ModBlockStateProvider extends BlockStateProvider {
     public ModBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
         super(output, FleshTechMod.MODID, exFileHelper);
+
+        blockWithItem(InitBlocks.MONSTER_CORE);
     }
 
     @Override

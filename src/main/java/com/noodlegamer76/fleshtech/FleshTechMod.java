@@ -2,13 +2,17 @@ package com.noodlegamer76.fleshtech;
 
 import com.mojang.logging.LogUtils;
 import com.noodlegamer76.fleshtech.block.InitBlocks;
+import com.noodlegamer76.fleshtech.client.renderer.block.StomachEntityRenderer;
 import com.noodlegamer76.fleshtech.client.renderer.block.TestRenderer;
 import com.noodlegamer76.fleshtech.creativetabs.FleshTechTab;
 import com.noodlegamer76.fleshtech.creativetabs.InitCreativeTabs;
 import com.noodlegamer76.fleshtech.entity.InitEntity;
 import com.noodlegamer76.fleshtech.entity.block.InitBlockEntities;
 import com.noodlegamer76.fleshtech.event.RegisterShadersEvent;
+import com.noodlegamer76.fleshtech.gui.InitMenus;
+import com.noodlegamer76.fleshtech.gui.monstercore.MonsterCoreScreen;
 import com.noodlegamer76.fleshtech.item.InitItems;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -24,6 +28,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
+
+import static com.noodlegamer76.fleshtech.gui.InitMenus.MONSTER_CORE_CONTAINER;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(FleshTechMod.MODID)
@@ -45,6 +51,7 @@ public class FleshTechMod
         InitEntity.ENTITIES.register(modEventBus);
         InitItems.ITEMS.register(modEventBus);
         InitBlockEntities.BLOCK_ENTITIES.register(modEventBus);
+        InitMenus.MENU_TYPES.register(modEventBus);
 
         InitCreativeTabs.CREATIVE_TABS.register(modEventBus);
         modEventBus.register(new FleshTechTab());
@@ -89,12 +96,13 @@ public class FleshTechMod
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-
+            event.enqueueWork(() -> MenuScreens.register(MONSTER_CORE_CONTAINER.get(), MonsterCoreScreen::new));
         }
 
         @SubscribeEvent
         public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event) {
             event.registerBlockEntityRenderer(InitBlockEntities.RENDER_TESTER.get(), TestRenderer::new);
+            event.registerBlockEntityRenderer(InitBlockEntities.STOMACH.get(), StomachEntityRenderer::new);
         }
     }
 }

@@ -16,4 +16,10 @@ public class InitItems {
             () -> new TestItem(new Item.Properties()));
     public static final RegistryObject<Item> RENDER_TESTER_BLOCK_ITEM = ITEMS.register("render_tester_block",
             () -> new BlockItem(InitBlocks.RENDER_TESTER_BLOCK.get(), new Item.Properties()));
+
+
+    public static final RegistryObject<Item> MONSTER_CORE = ITEMS.register("monster_core",
+            () -> new BlockItem(InitBlocks.MONSTER_CORE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> STOMACH = ITEMS.register("stomach",
+            () -> new BlockItem(InitBlocks.STOMACH.get(), new Item.Properties()));
 }
