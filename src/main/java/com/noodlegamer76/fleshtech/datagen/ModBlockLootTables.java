@@ -18,6 +18,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
     protected void generate() {
         dropSelf(InitBlocks.RENDER_TESTER_BLOCK.get());
         dropSelf(InitBlocks.MONSTER_CORE.get());
+        dropSelf(InitBlocks.STOMACH.get());
 
         //dropSelf(BlockInit.CRYSTALLIZED_DIRT.get());
 

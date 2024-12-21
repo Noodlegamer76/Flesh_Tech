@@ -1,25 +1,22 @@
 package com.noodlegamer76.fleshtech.entity.block;
 
+import com.noodlegamer76.fleshtech.datagen.ModItemTagGenerator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import org.checkerframework.checker.units.qual.A;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -29,7 +26,6 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class StomachEntity extends MonsterMachine implements GeoBlockEntity {
     public static final RawAnimation OPEN_IDLE = RawAnimation.begin().thenLoop("open_idle");
@@ -56,16 +52,17 @@ public class StomachEntity extends MonsterMachine implements GeoBlockEntity {
             entity.isCreated = true;
         }
         if (entity.corePos != null) {
-            consumeItemsAtOrAbove(level, entity);
+            consumeFoodAtOrAbove(level, entity);
+            consumeBiomassAtOrAbove(level, entity);
+            isEating(level, entity);
         }
         entity.setChanged();
         level.sendBlockUpdated(entity.getBlockPos(), entity.getBlockState(), entity.getBlockState(), 2);
     }
 
-    private static void consumeItemsAtOrAbove(Level level, StomachEntity entity) {
+    private static void consumeFoodAtOrAbove(Level level, StomachEntity entity) {
         if (entity.eatingCooldown > 0) {
             entity.eatingCooldown -= 1;
-            entity.isEating = true;
             return;
         }
         List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, new AABB(entity.getBlockPos(), entity.getBlockPos().offset(1, 2 ,1)), (item) -> {
@@ -85,10 +82,46 @@ public class StomachEntity extends MonsterMachine implements GeoBlockEntity {
             entity.eatingCooldown = (int) ((food.getNutrition() + (food.getNutrition() * food.getSaturationModifier() * 2) * 0.75));
             stack.shrink(1);
         }
+
+    }
+
+    private static void consumeBiomassAtOrAbove(Level level, StomachEntity entity) {
+        if (entity.eatingCooldown > 0) {
+            return;
+        }
+        List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, new AABB(entity.getBlockPos(), entity.getBlockPos().offset(1, 2 ,1)), (itemEntity) -> {
+            ItemStack item = itemEntity.getItem();
+            if (item.is(ModItemTagGenerator.BIOMASS)) {
+                return true;
+            }
+            return false;
+        });
+
+        if (!items.isEmpty() && level.getBlockEntity(entity.corePos) instanceof MonsterCoreEntity core) {
+            ItemStack stack = items.get(0).getItem();
+
+            entity.eatingCooldown = 10;
+            core.carbohydrates += 10;
+            stack.shrink(1);
+        }
+    }
+
+
+    private static void isEating(Level level, StomachEntity entity) {
+        List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, new AABB(entity.getBlockPos(), entity.getBlockPos().offset(1, 2 ,1)), (item) -> {
+            FoodProperties food = item.getItem().getFoodProperties(null);
+            if ((food != null && (food.getNutrition() > 0 || food.getSaturationModifier() > 0)) || item.getItem().is(ModItemTagGenerator.BIOMASS)) {
+                return true;
+            }
+            return false;
+        });
+
+        if (!items.isEmpty() && level.getBlockEntity(entity.corePos) instanceof MonsterCoreEntity core) {
+            entity.isEating = true;
+        }
         else {
             entity.isEating = false;
         }
-
     }
 
     @Override
@@ -111,46 +144,24 @@ public class StomachEntity extends MonsterMachine implements GeoBlockEntity {
     }
 
     private PlayState eating(AnimationState<GeoBlockEntity> state) {
-        //if (isEating && !wasEating) {
-        //    state.getController().setAnimation(CLOSE);
-        //    state.setControllerSpeed(1);
-        //    wasEating = true;
-        //    return PlayState.CONTINUE;
-        //}
-        //if (!isEating && wasEating) {
-        //    state.getController().setAnimation(OPEN);
-        //    state.setControllerSpeed(1);
-        //    wasEating = false;
-        //    return PlayState.CONTINUE;
-        //}
-        //if (!state.getController().hasAnimationFinished()) {
-        //    return PlayState.CONTINUE;
-        //}
-        //if (isEating) {
-        //    state.getController().setAnimation(DIGESTING);
-        //    state.setControllerSpeed(16);
-        //    return PlayState.CONTINUE;
-        //}
-        //state.getController().setAnimation(OPEN_IDLE);
-        //state.setControllerSpeed(16);
-        //return PlayState.CONTINUE;
-
-        if (isEating && !wasEating) {
-            if (state.getController().hasAnimationFinished()) {
-                state.setAnimation(CLOSE);
-            }
-            wasEating = true;
+        if ((state.isCurrentAnimation(OPEN) || state.isCurrentAnimation(CLOSE)) && !state.getController().hasAnimationFinished()) {
             return PlayState.CONTINUE;
         }
-        if (!isEating && wasEating) {
-            if (state.getController().hasAnimationFinished()) {
-                state.setAnimation(OPEN);
-            }
+
+        if (!isEating && !wasEating) {
+            state.setAndContinue(OPEN_IDLE);
+        }
+        else if (!isEating && wasEating) {
+            state.setAndContinue(OPEN);
             wasEating = false;
-            return PlayState.CONTINUE;
         }
-
-
+        else if (isEating && wasEating) {
+            state.setAndContinue(DIGESTING);
+        }
+        else if (isEating && !wasEating) {
+            state.setAndContinue(CLOSE);
+            wasEating = true;
+        }
         return PlayState.CONTINUE;
     }
 

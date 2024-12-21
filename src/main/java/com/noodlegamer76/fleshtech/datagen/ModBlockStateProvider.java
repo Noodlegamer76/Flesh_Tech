@@ -14,7 +14,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
     public ModBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
         super(output, FleshTechMod.MODID, exFileHelper);
 
-        blockWithItem(InitBlocks.MONSTER_CORE);
+        //blockWithItem(InitBlocks.MONSTER_CORE);
     }
 
     @Override

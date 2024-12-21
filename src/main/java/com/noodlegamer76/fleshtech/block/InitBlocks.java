@@ -16,7 +16,7 @@ public class InitBlocks {
             () -> new RenderTesterBlock(BlockBehaviour.Properties.copy(Blocks.STONE).mapColor(DyeColor.BLACK).noCollission().noOcclusion()));
 
     public static final RegistryObject<Block> MONSTER_CORE = BLOCKS.register("monster_core",
-            () -> new MonsterCore(BlockBehaviour.Properties.copy(Blocks.STONE).mapColor(DyeColor.BLACK)));
+            () -> new MonsterCore(BlockBehaviour.Properties.copy(Blocks.BEDROCK).mapColor(DyeColor.BLACK)));
     public static final RegistryObject<Block> STOMACH = BLOCKS.register("stomach",
             () -> new StomachBlock(BlockBehaviour.Properties.copy(Blocks.STONE).mapColor(DyeColor.BLACK).noOcclusion()));
 }
