@@ -16,6 +16,10 @@ public class InitBlockEntities {
 
     public static final RegistryObject<BlockEntityType<MonsterCoreEntity>> MONSTER_CORE = BLOCK_ENTITIES.register("monster_core",
             () -> BlockEntityType.Builder.of(MonsterCoreEntity::new, InitBlocks.MONSTER_CORE.get()).build(null));
+
     public static final RegistryObject<BlockEntityType<StomachEntity>> STOMACH = BLOCK_ENTITIES.register("stomach",
             () -> BlockEntityType.Builder.of(StomachEntity::new, InitBlocks.STOMACH.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<BioForgeEntity>> BIO_FORGE = BLOCK_ENTITIES.register("bio_forge",
+            () -> BlockEntityType.Builder.of(BioForgeEntity::new, InitBlocks.BIO_FORGE.get()).build(null));
 }

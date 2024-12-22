@@ -22,4 +22,6 @@ public class InitItems {
             () -> new BlockItem(InitBlocks.MONSTER_CORE.get(), new Item.Properties()));
     public static final RegistryObject<Item> STOMACH = ITEMS.register("stomach",
             () -> new BlockItem(InitBlocks.STOMACH.get(), new Item.Properties()));
+    public static final RegistryObject<Item> BIO_FORGE = ITEMS.register("bio_forge",
+            () -> new BlockItem(InitBlocks.BIO_FORGE.get(), new Item.Properties()));
 }

@@ -10,6 +10,7 @@ import com.noodlegamer76.fleshtech.entity.InitEntity;
 import com.noodlegamer76.fleshtech.entity.block.InitBlockEntities;
 import com.noodlegamer76.fleshtech.event.RegisterShadersEvent;
 import com.noodlegamer76.fleshtech.gui.InitMenus;
+import com.noodlegamer76.fleshtech.gui.bioforge.BioForgeScreen;
 import com.noodlegamer76.fleshtech.gui.monstercore.MonsterCoreScreen;
 import com.noodlegamer76.fleshtech.item.InitItems;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -29,6 +30,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 
+import static com.noodlegamer76.fleshtech.gui.InitMenus.BIO_FORGE;
 import static com.noodlegamer76.fleshtech.gui.InitMenus.MONSTER_CORE_CONTAINER;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -97,6 +99,7 @@ public class FleshTechMod
         public static void onClientSetup(FMLClientSetupEvent event)
         {
             event.enqueueWork(() -> MenuScreens.register(MONSTER_CORE_CONTAINER.get(), MonsterCoreScreen::new));
+            event.enqueueWork(() -> MenuScreens.register(BIO_FORGE.get(), BioForgeScreen::new));
         }
 
         @SubscribeEvent

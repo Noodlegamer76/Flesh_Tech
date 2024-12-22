@@ -1,6 +1,7 @@
 package com.noodlegamer76.fleshtech.gui;
 
 import com.noodlegamer76.fleshtech.FleshTechMod;
+import com.noodlegamer76.fleshtech.gui.bioforge.BioForgeMenu;
 import com.noodlegamer76.fleshtech.gui.monstercore.MonsterCoreMenu;
 import com.noodlegamer76.fleshtech.gui.monstercore.MonsterCoreScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -17,8 +18,11 @@ public class InitMenus {
 
     public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, FleshTechMod.MODID);
 
-    public static final RegistryObject<MenuType<MonsterCoreMenu>> MONSTER_CORE_CONTAINER = MENU_TYPES.register("monster_core_block",
+    public static final RegistryObject<MenuType<MonsterCoreMenu>> MONSTER_CORE_CONTAINER = MENU_TYPES.register("monster_core",
             () -> IForgeMenuType.create((windowId, inv, data) -> new MonsterCoreMenu(windowId, inv.player, data.readBlockPos())));
+
+    public static final RegistryObject<MenuType<BioForgeMenu>> BIO_FORGE = MENU_TYPES.register("bio_forge",
+            () -> IForgeMenuType.create((windowId, inv, data) -> new BioForgeMenu(windowId, inv.player, data.readBlockPos())));
 
 
 

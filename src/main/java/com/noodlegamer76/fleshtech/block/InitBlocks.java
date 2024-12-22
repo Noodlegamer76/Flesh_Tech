@@ -16,7 +16,12 @@ public class InitBlocks {
             () -> new RenderTesterBlock(BlockBehaviour.Properties.copy(Blocks.STONE).mapColor(DyeColor.BLACK).noCollission().noOcclusion()));
 
     public static final RegistryObject<Block> MONSTER_CORE = BLOCKS.register("monster_core",
-            () -> new MonsterCore(BlockBehaviour.Properties.copy(Blocks.BEDROCK).mapColor(DyeColor.BLACK)));
+            () -> new MonsterCore(BlockBehaviour.Properties.copy(Blocks.BEDROCK).mapColor(DyeColor.RED)));
+
     public static final RegistryObject<Block> STOMACH = BLOCKS.register("stomach",
-            () -> new StomachBlock(BlockBehaviour.Properties.copy(Blocks.STONE).mapColor(DyeColor.BLACK).noOcclusion()));
+            () -> new StomachBlock(BlockBehaviour.Properties.copy(Blocks.STONE).mapColor(DyeColor.RED).noOcclusion()));
+
+    public static final RegistryObject<Block> BIO_FORGE = BLOCKS.register("bio_forge",
+            () -> new BioForgeBlock(BlockBehaviour.Properties.copy(Blocks.STONE).mapColor(DyeColor.RED).noOcclusion()));
+
 }
