@@ -13,6 +13,8 @@ import com.noodlegamer76.fleshtech.gui.InitMenus;
 import com.noodlegamer76.fleshtech.gui.bioforge.BioForgeScreen;
 import com.noodlegamer76.fleshtech.gui.monstercore.MonsterCoreScreen;
 import com.noodlegamer76.fleshtech.item.InitItems;
+import com.noodlegamer76.fleshtech.packets.bioforge.PacketHandler;
+import com.noodlegamer76.fleshtech.recipes.InitRecipeTypes;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
@@ -54,6 +56,8 @@ public class FleshTechMod
         InitItems.ITEMS.register(modEventBus);
         InitBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         InitMenus.MENU_TYPES.register(modEventBus);
+        InitRecipeTypes.RECIPE_TYPES.register(modEventBus);
+        InitRecipeTypes.RECIPE_SERIALIZERS.register(modEventBus);
 
         InitCreativeTabs.CREATIVE_TABS.register(modEventBus);
         modEventBus.register(new FleshTechTab());
@@ -81,6 +85,8 @@ public class FleshTechMod
         LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
 
         Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
+
+        event.enqueueWork(PacketHandler::register);
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

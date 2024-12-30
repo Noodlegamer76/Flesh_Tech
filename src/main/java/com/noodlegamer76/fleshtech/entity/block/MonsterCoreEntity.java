@@ -7,6 +7,9 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -14,9 +17,9 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class MonsterCoreEntity extends BlockEntity {
     boolean isCreated = false;
-    int growthRange = 0;
-    long calories;
-    long carbohydrates;
+    public int growthRange = 0;
+    public long calories;
+    public long carbohydrates;
 
     public MonsterCoreEntity(BlockPos pPos, BlockState pBlockState) {
         super(InitBlockEntities.MONSTER_CORE.get(), pPos, pBlockState);

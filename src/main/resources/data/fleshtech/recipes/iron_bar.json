@@ -1,0 +1,6 @@
+{
+  "type": "fleshtech:bioforge_recipe",
+  "calories": 100,
+  "carbohydrates": 50,
+  "result": "minecraft:iron_ingot"
+}

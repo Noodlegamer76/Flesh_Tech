@@ -23,7 +23,7 @@ import java.util.function.Predicate;
 public abstract class MonsterMachine extends BlockEntity {
 
     boolean isCreated = false;
-    BlockPos corePos;
+    public BlockPos corePos;
 
     public MonsterMachine(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);

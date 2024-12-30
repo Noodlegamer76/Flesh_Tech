@@ -3,6 +3,11 @@ package com.noodlegamer76.fleshtech.gui.bioforge;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.noodlegamer76.fleshtech.FleshTechMod;
 import com.noodlegamer76.fleshtech.gui.widgets.ScrollableItemList;
+import com.noodlegamer76.fleshtech.gui.widgets.bioforge.BioForgeItemList;
+import com.noodlegamer76.fleshtech.gui.widgets.bioforge.CraftButton;
+import com.noodlegamer76.fleshtech.recipes.InitRecipeTypes;
+import com.noodlegamer76.fleshtech.recipes.bioforge.BioForgeRecipe;
+import com.noodlegamer76.fleshtech.recipes.bioforge.BioForgeRecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.FittingMultiLineTextWidget;
@@ -15,15 +20,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
+
 
 public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
     private int scaledWidth;
     private int scaledHeight;
     private double guiScale;
-    private ScrollableItemList scrollableItemList;
+    private BioForgeItemList scrollableItemList;
+    CraftButton button;
     ItemStack selectedItem;
+    public int selectedItemIndex;
+    List<BioForgeRecipe> recipes = menu.level.getRecipeManager().getAllRecipesFor(InitRecipeTypes.BIOFORGE_RECIPE_TYPE.get());
 
     private static final ResourceLocation SQUARE_PANEL = new ResourceLocation(FleshTechMod.MODID, "textures/screens/basic_background.png");
     private static final ResourceLocation SLOT = new ResourceLocation(FleshTechMod.MODID, "textures/screens/slot.png");
@@ -59,37 +69,30 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
         int smallWidthGap = (int) (imageWidth * 0.025);
 
         ArrayList<ItemStack> items = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            items.add(Items.STONE.getDefaultInstance());
-            items.add(Items.WAXED_WEATHERED_CUT_COPPER_STAIRS.getDefaultInstance());
-            items.add(Items.VERDANT_FROGLIGHT.getDefaultInstance());
-            items.add(Items.SADDLE.getDefaultInstance());
-            items.add(Items.SALMON.getDefaultInstance());
-            items.add(Items.FARMLAND.getDefaultInstance());
-            items.add(Items.GLASS.getDefaultInstance());
-            items.add(Items.GHAST_SPAWN_EGG.getDefaultInstance());
-            items.add(Items.GHAST_TEAR.getDefaultInstance());
-            items.add(Items.GILDED_BLACKSTONE.getDefaultInstance());
-            items.add(Items.HANGING_ROOTS.getDefaultInstance());
-            items.add(Items.HAY_BLOCK.getDefaultInstance());
-            items.add(Items.HEART_OF_THE_SEA.getDefaultInstance());
-            items.add(Items.HONEYCOMB.getDefaultInstance());
-            items.add(Items.HOPPER.getDefaultInstance());
-            items.add(Items.JIGSAW.getDefaultInstance());
-            items.add(Items.JACK_O_LANTERN.getDefaultInstance());
-            items.add(Items.JUKEBOX.getDefaultInstance());
-            items.add(Items.JUNGLE_BOAT.getDefaultInstance());
-            items.add(Items.JUNGLE_FENCE.getDefaultInstance());
+
+        for (BioForgeRecipe recipe: recipes) {
+            items.add(recipe.getResultItem(menu.level.registryAccess()));
         }
-        scrollableItemList = new ScrollableItemList(
+
+        scrollableItemList = new BioForgeItemList(
                 leftPos + smallWidthGap,
                 topPos + smallHeightGap,
                 imageWidth / 2,
                 imageHeight - smallHeightGap * 2,
                 items, 12,
-                Component.literal("e \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n e"));
+                Component.literal("e \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n e"),
+                menu, this);
+
+        button = new CraftButton(
+                leftPos + imageWidth - 40,
+                topPos + imageHeight - 40,
+                imageWidth,
+                imageHeight,
+                Component.literal("test"),
+                this);
 
         addRenderableWidget(scrollableItemList);
+        addRenderableWidget(button);
     }
 
     @Override
@@ -115,6 +118,8 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
         if (scrollableItemList != null) {
             if (selectedItem != scrollableItemList.getSelectedItem() && scrollableItemList.getSelectedItem() != null) {
                 selectedItem = scrollableItemList.getSelectedItem();
+                selectedItemIndex = scrollableItemList.selectedItemIndex;
+
             }
             renderDescription(guiGraphics,
                     leftPos + smallWidthGap * 2 + quarterWidth * 2,

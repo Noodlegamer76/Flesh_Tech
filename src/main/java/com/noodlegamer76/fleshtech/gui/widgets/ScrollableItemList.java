@@ -2,6 +2,8 @@ package com.noodlegamer76.fleshtech.gui.widgets;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.noodlegamer76.fleshtech.FleshTechMod;
+import com.noodlegamer76.fleshtech.gui.bioforge.BioForgeMenu;
+import com.noodlegamer76.fleshtech.gui.widgets.bioforge.BioForgeItemList;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractScrollWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -21,11 +23,15 @@ public class ScrollableItemList extends AbstractScrollWidget {
     private ItemStack selectedItem;
     private final int itemSlotsX;
     private static final ResourceLocation SLOT = new ResourceLocation(FleshTechMod.MODID, "textures/screens/slot.png");
+    BioForgeMenu menu;
+    public int hoveredItemIndex;
+    public int selectedItemIndex;
 
-    public ScrollableItemList(int pX, int pY, int pWidth, int pHeight, ArrayList itemList, int itemSlotsX, Component pMessage) {
+    public ScrollableItemList(int pX, int pY, int pWidth, int pHeight, ArrayList itemList, int itemSlotsX, Component pMessage, BioForgeMenu menu) {
         super(pX, pY, pWidth, pHeight, pMessage);
         this.itemList = itemList;
         this.itemSlotsX = itemSlotsX;
+        this.menu = menu;
     }
 
     @Override
@@ -74,6 +80,7 @@ public class ScrollableItemList extends AbstractScrollWidget {
             if ((mouseX >= x) && (mouseX < x + widthSize) && (mouseY + scrollAmount() >= y) && (mouseY + scrollAmount() < y + widthSize)) {
                 guiGraphics.fillGradient(RenderType.guiOverlay(), x, y, x + widthSize, y + widthSize, -2130706433, -2130706433, 0);
                 hoveredItem = itemList.get(i);
+                hoveredItemIndex = i;
             }
         }
     }
@@ -86,6 +93,7 @@ public class ScrollableItemList extends AbstractScrollWidget {
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
         if (hoveredItem != null) {
             selectedItem = hoveredItem;
+            selectedItemIndex = hoveredItemIndex;
         }
         return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
