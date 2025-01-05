@@ -6,7 +6,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.data.worldgen.DimensionTypes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -36,26 +39,22 @@ public class RenderTesterBlock extends Block implements EntityBlock {
     @Override
     public void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pIsMoving) {
         super.onPlace(pState, pLevel, pPos, pOldState, pIsMoving);
-        Level nether = pLevel.getServer().getLevel(Level.NETHER);
+        Level nether = pLevel.getServer().getLevel(Level.OVERWORLD);
         if (nether instanceof ServerLevel serverLevel) {
 
             RandomState randomState = serverLevel.getChunkSource().randomState();
-            DensityFunction finalDensity = randomState.router().finalDensity();
 
+            ChunkPos chunkPos = new ChunkPos(pPos);
+            for (int x = chunkPos.getMinBlockX(); x <= chunkPos.getMaxBlockX(); x++) {
+                for (int z = chunkPos.getMinBlockZ(); z <= chunkPos.getMaxBlockZ(); z++) {
+                    //Get the base column for this (x, z) position
+                    NoiseColumn column = serverLevel.getChunkSource().getGenerator()
+                            .getBaseColumn(x, z, serverLevel, randomState);
 
+                    for (int y = serverLevel.getMinBuildHeight(); y < serverLevel.getMaxBuildHeight(); y++) {
+                        BlockState state = column.getBlock(y);
+                        pLevel.setBlock(new BlockPos(x, y, z), state, 2);
 
-            int radius = 15;
-            for (int x = -radius; x < radius; x++) {
-                for (int y = -radius; y < radius; y++) {
-                    for (int z = -radius; z < radius; z++) {
-                        BlockPos currentPos = pPos.offset(x, y, z);
-                        double noise = finalDensity.compute(new DensityFunction.SinglePointContext(currentPos.getX(), currentPos.getY(), currentPos.getZ()));
-                        if (noise >= 0) {
-                            pLevel.setBlock(currentPos, Blocks.NETHERRACK.defaultBlockState(), 2);
-                        }
-                        else {
-                            pLevel.setBlock(currentPos, Blocks.AIR.defaultBlockState(), 2);
-                        }
                     }
                 }
             }

@@ -24,4 +24,7 @@ public class InitItems {
             () -> new BlockItem(InitBlocks.STOMACH.get(), new Item.Properties()));
     public static final RegistryObject<Item> BIO_FORGE = ITEMS.register("bio_forge",
             () -> new BlockItem(InitBlocks.BIO_FORGE.get(), new Item.Properties()));
+
+    public static final RegistryObject<Item> FLESH_BLOCK = ITEMS.register("flesh_block",
+            () -> new BlockItem(InitBlocks.FLESH_BLOCK.get(), new Item.Properties()));
 }

@@ -24,4 +24,7 @@ public class InitBlocks {
     public static final RegistryObject<Block> BIO_FORGE = BLOCKS.register("bio_forge",
             () -> new BioForgeBlock(BlockBehaviour.Properties.copy(Blocks.STONE).mapColor(DyeColor.RED).noOcclusion()));
 
+    public static final RegistryObject<Block> FLESH_BLOCK = BLOCKS.register("flesh_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.MOSS_BLOCK).mapColor(DyeColor.RED)));
+
 }

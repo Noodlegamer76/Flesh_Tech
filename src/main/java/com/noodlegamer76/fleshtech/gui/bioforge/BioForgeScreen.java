@@ -116,11 +116,8 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 
 
         if (scrollableItemList != null) {
-            if (selectedItem != scrollableItemList.getSelectedItem() && scrollableItemList.getSelectedItem() != null) {
                 selectedItem = scrollableItemList.getSelectedItem();
                 selectedItemIndex = scrollableItemList.selectedItemIndex;
-
-            }
             renderDescription(guiGraphics,
                     leftPos + smallWidthGap * 2 + quarterWidth * 2,
                     topPos + smallHeightGap,

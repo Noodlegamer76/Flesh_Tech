@@ -1,1 +1,4 @@
-// 1.20.1	2024-12-20T11:55:22.2844047	Block States: fleshtech
+// 1.20.1	2025-01-02T12:30:21.5308305	Block States: fleshtech
+ba172343877f23d75b2fc31d45cfba197ac7eb2d assets/fleshtech/blockstates/flesh_block.json
+717a311f53cc712f09382fecbdb89347665a1048 assets/fleshtech/models/block/flesh_block.json
+470abded9c4d63e780b87efc57b51bfd956cb4ea assets/fleshtech/models/item/flesh_block.json

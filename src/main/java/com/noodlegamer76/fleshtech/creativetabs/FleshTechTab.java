@@ -13,6 +13,7 @@ public class FleshTechTab {
             event.accept(InitItems.MONSTER_CORE);
             event.accept(InitItems.STOMACH);
             event.accept(InitItems.BIO_FORGE);
+            event.accept(InitItems.FLESH_BLOCK);
         }
     }
 }

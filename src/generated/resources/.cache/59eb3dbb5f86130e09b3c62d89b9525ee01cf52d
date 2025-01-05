@@ -1,4 +1,6 @@
-// 1.20.1	2024-12-20T11:55:22.281404	Loot Tables
+// 1.20.1	2025-01-02T12:26:44.8168566	Loot Tables
+94120588f6c9350a96d241c04c4d7dba3332d6fd data/fleshtech/loot_tables/blocks/bio_forge.json
+b8bed3e7e0316ab5039ea31a32c7ccfdf305aa15 data/fleshtech/loot_tables/blocks/flesh_block.json
 d9b0fdf30d317a925de9385d4297cd270fe5dbf2 data/fleshtech/loot_tables/blocks/monster_core.json
 bf05cf2499fd7b90f6e1f3e36169528ca5c52b6c data/fleshtech/loot_tables/blocks/render_tester.json
 580c6e8140f6edf5ce5b03e3da39b8a3aab797f1 data/fleshtech/loot_tables/blocks/stomach.json

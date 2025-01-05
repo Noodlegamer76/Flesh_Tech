@@ -24,8 +24,8 @@ public class ScrollableItemList extends AbstractScrollWidget {
     private final int itemSlotsX;
     private static final ResourceLocation SLOT = new ResourceLocation(FleshTechMod.MODID, "textures/screens/slot.png");
     BioForgeMenu menu;
-    public int hoveredItemIndex;
-    public int selectedItemIndex;
+    private int hoveredItemIndex;
+    public int selectedItemIndex = -1;
 
     public ScrollableItemList(int pX, int pY, int pWidth, int pHeight, ArrayList itemList, int itemSlotsX, Component pMessage, BioForgeMenu menu) {
         super(pX, pY, pWidth, pHeight, pMessage);

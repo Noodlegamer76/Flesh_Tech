@@ -1,6 +1,8 @@
 package com.noodlegamer76.fleshtech.entity.block;
 
 import com.noodlegamer76.fleshtech.util.data.MonsterCorePositonData;
+import com.noodlegamer76.fleshtech.util.infection.Infection;
+import com.noodlegamer76.fleshtech.util.infection.NoiseFromDimension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -20,6 +22,7 @@ public class MonsterCoreEntity extends BlockEntity {
     public int growthRange = 0;
     public long calories;
     public long carbohydrates;
+    public Infection infection;
 
     public MonsterCoreEntity(BlockPos pPos, BlockState pBlockState) {
         super(InitBlockEntities.MONSTER_CORE.get(), pPos, pBlockState);
@@ -31,13 +34,32 @@ public class MonsterCoreEntity extends BlockEntity {
             return;
         }
 
+        if (entity.infection == null && level instanceof ServerLevel serverLevel) {
+            entity.infection = new Infection(serverLevel, serverLevel.getServer().getLevel(NoiseFromDimension.FLESH), entity);
+        }
+
         if (!entity.isCreated) {
             create(level, entity);
             loadChunk((ServerLevel) level, blockPos);
+
+            setInitialInfectionBlocks((ServerLevel) level, blockPos);
         }
+
+        entity.infection.tick();
 
         level.sendBlockUpdated(blockPos, blockState, blockState, 2);
         entity.setChanged();
+    }
+
+    private static void setInitialInfectionBlocks(ServerLevel level, BlockPos pos) {
+        MonsterCorePositonData.DimensionBlockPos dimPos = new MonsterCorePositonData.DimensionBlockPos(
+                pos, level.dimension().location());
+        MonsterCorePositonData.get(level).addSubBlockPosition(dimPos, pos.above());
+        MonsterCorePositonData.get(level).addSubBlockPosition(dimPos, pos.east());
+        MonsterCorePositonData.get(level).addSubBlockPosition(dimPos, pos.west());
+        MonsterCorePositonData.get(level).addSubBlockPosition(dimPos, pos.south());
+        MonsterCorePositonData.get(level).addSubBlockPosition(dimPos, pos.north());
+        MonsterCorePositonData.get(level).addSubBlockPosition(dimPos, pos.below());
     }
 
     private static void create(Level level, MonsterCoreEntity entity) {

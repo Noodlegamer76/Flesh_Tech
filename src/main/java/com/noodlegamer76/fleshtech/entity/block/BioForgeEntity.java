@@ -43,8 +43,6 @@ public class BioForgeEntity extends MonsterMachine {
                 core.calories -= entity.currentRecipe.caloriesCost;
                 core.carbohydrates -= entity.currentRecipe.carbohydratesCost;
             }
-            else {
-            }
             entity.currentRecipe = null;
         }
     }

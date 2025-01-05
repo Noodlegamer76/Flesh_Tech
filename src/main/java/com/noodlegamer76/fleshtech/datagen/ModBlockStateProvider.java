@@ -13,13 +13,13 @@ import net.minecraftforge.registries.RegistryObject;
 public class ModBlockStateProvider extends BlockStateProvider {
     public ModBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
         super(output, FleshTechMod.MODID, exFileHelper);
-
-        //blockWithItem(InitBlocks.MONSTER_CORE);
     }
 
     @Override
     protected void registerStatesAndModels() {
+        blockWithItem(InitBlocks.FLESH_BLOCK);
     }
+
     private void cutout(RegistryObject<Block> blockRegistryObject) {
         simpleBlock(blockRegistryObject.get(),
                 models().cubeAll(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), blockTexture(blockRegistryObject.get())).renderType("cutout"));

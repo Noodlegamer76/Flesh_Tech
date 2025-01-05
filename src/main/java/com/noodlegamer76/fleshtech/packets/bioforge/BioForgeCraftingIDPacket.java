@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class BioForgeCraftingIDPacket {
-    public int bioForgeItemCraftIndex = 0;
+    public int bioForgeItemCraftIndex;
     BlockPos pos;
 
     public BioForgeCraftingIDPacket(int bioForgeItemCraftIndex, BlockPos pos) {
@@ -36,6 +36,9 @@ public class BioForgeCraftingIDPacket {
         if (level.getBlockEntity(pos) instanceof BioForgeEntity entity) {
             List<BioForgeRecipe> recipes = level.getRecipeManager().getAllRecipesFor(InitRecipeTypes.BIOFORGE_RECIPE_TYPE.get());
 
+            if (bioForgeItemCraftIndex == -1) {
+                return;
+            }
             BioForgeRecipe recipe = recipes.get(bioForgeItemCraftIndex);
 
             entity.currentRecipe = recipe;
