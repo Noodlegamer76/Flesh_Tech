@@ -40,24 +40,24 @@ public class RenderTesterBlock extends Block implements EntityBlock {
     public void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pIsMoving) {
         super.onPlace(pState, pLevel, pPos, pOldState, pIsMoving);
         Level nether = pLevel.getServer().getLevel(Level.OVERWORLD);
-        if (nether instanceof ServerLevel serverLevel) {
-
-            RandomState randomState = serverLevel.getChunkSource().randomState();
-
-            ChunkPos chunkPos = new ChunkPos(pPos);
-            for (int x = chunkPos.getMinBlockX(); x <= chunkPos.getMaxBlockX(); x++) {
-                for (int z = chunkPos.getMinBlockZ(); z <= chunkPos.getMaxBlockZ(); z++) {
-                    //Get the base column for this (x, z) position
-                    NoiseColumn column = serverLevel.getChunkSource().getGenerator()
-                            .getBaseColumn(x, z, serverLevel, randomState);
-
-                    for (int y = serverLevel.getMinBuildHeight(); y < serverLevel.getMaxBuildHeight(); y++) {
-                        BlockState state = column.getBlock(y);
-                        pLevel.setBlock(new BlockPos(x, y, z), state, 2);
-
-                    }
-                }
-            }
-        }
+        //if (nether instanceof ServerLevel serverLevel) {
+//
+        //    RandomState randomState = serverLevel.getChunkSource().randomState();
+//
+        //    ChunkPos chunkPos = new ChunkPos(pPos);
+        //    for (int x = chunkPos.getMinBlockX(); x <= chunkPos.getMaxBlockX(); x++) {
+        //        for (int z = chunkPos.getMinBlockZ(); z <= chunkPos.getMaxBlockZ(); z++) {
+        //            //Get the base column for this (x, z) position
+        //            NoiseColumn column = serverLevel.getChunkSource().getGenerator()
+        //                    .getBaseColumn(x, z, serverLevel, randomState);
+//
+        //            for (int y = serverLevel.getMinBuildHeight(); y < serverLevel.getMaxBuildHeight(); y++) {
+        //                BlockState state = column.getBlock(y);
+        //                pLevel.setBlock(new BlockPos(x, y, z), state, 2);
+//
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

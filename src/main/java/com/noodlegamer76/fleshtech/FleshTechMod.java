@@ -1,6 +1,9 @@
 package com.noodlegamer76.fleshtech;
 
 import com.mojang.logging.LogUtils;
+import com.noodlegamer76.devgui.particles.InitParticles;
+import com.noodlegamer76.devgui.particles.RegisterEditableParticles;
+import com.noodlegamer76.devgui.windows.DevGui;
 import com.noodlegamer76.fleshtech.block.InitBlocks;
 import com.noodlegamer76.fleshtech.client.renderer.block.StomachEntityRenderer;
 import com.noodlegamer76.fleshtech.client.renderer.block.TestRenderer;
@@ -32,6 +35,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 
+import static com.noodlegamer76.devgui.events.DevGuiClientEvents.window;
 import static com.noodlegamer76.fleshtech.gui.InitMenus.BIO_FORGE;
 import static com.noodlegamer76.fleshtech.gui.InitMenus.MONSTER_CORE_CONTAINER;
 
@@ -48,6 +52,7 @@ public class FleshTechMod
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
@@ -58,17 +63,13 @@ public class FleshTechMod
         InitMenus.MENU_TYPES.register(modEventBus);
         InitRecipeTypes.RECIPE_TYPES.register(modEventBus);
         InitRecipeTypes.RECIPE_SERIALIZERS.register(modEventBus);
+        InitParticles.PARTICLE_TYPES.register(modEventBus);
 
         InitCreativeTabs.CREATIVE_TABS.register(modEventBus);
         modEventBus.register(new FleshTechTab());
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
-
-
-        if(Dist.CLIENT.isClient()) {
-            modEventBus.register(new RegisterShadersEvent());
-        }
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
@@ -106,6 +107,7 @@ public class FleshTechMod
         {
             event.enqueueWork(() -> MenuScreens.register(MONSTER_CORE_CONTAINER.get(), MonsterCoreScreen::new));
             event.enqueueWork(() -> MenuScreens.register(BIO_FORGE.get(), BioForgeScreen::new));
+            RegisterEditableParticles.registerDefaultParticles();
         }
 
         @SubscribeEvent
